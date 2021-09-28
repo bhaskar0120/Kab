@@ -5,7 +5,7 @@
     import { addDoc, arrayUnion, collection, doc,  getDocs,getDoc, getFirestore, query, updateDoc, where } from "@firebase/firestore";
     import USER from '../user';
 
-    let name = `Group${$USER.groups.length}`;
+    let name = `Group${$USER.groups.length+1}`;
     const disp = createEventDispatcher();
     function back() {
         disp('pageChange', {
@@ -20,6 +20,7 @@
 
     async function add(){
         if(member.length > 0){
+            if(name === "") name= `Group${$USER.groups.length+1}`;
             const groupDoc = await addDoc(collection(db,'group'),{name:name,update:true,member:member});
             member.forEach(async element => {
                 await updateDoc(doc(db,`user/${element}`),{groups:arrayUnion({name:name,id:groupDoc.id})})
@@ -44,7 +45,7 @@
     let result =[];
     let member = [$USER.uid];
     async function search(event){
-        const res = query(ref,where('username' ,'==',event.detail.term));
+        const res = query(ref,where('username' ,'==',event.detail.term.toLowerCase()));
         const docs = await getDocs(res);
         result = [];
         docs.forEach(doc=>{

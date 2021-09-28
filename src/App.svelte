@@ -35,7 +35,7 @@
 
 			if(!document.exists()){
 				console.log("Page Created");
-				const toBeWritten = {name:user.displayName, groups:[], email:user.email, username:user.email.split('@')[0].toLowerCase()};
+				const toBeWritten = {name:user.displayName, groups:[], uid:user.uid, email:user.email, username:user.email.split('@')[0].toLowerCase()};
 				await setDoc(docRef, toBeWritten);
 				USER.set(toBeWritten);
 			}
